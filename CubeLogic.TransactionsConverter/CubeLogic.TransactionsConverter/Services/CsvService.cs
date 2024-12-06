@@ -7,37 +7,18 @@ namespace CubeLogic.TransactionsConverter.Services;
 
 public class CsvService
 {
-    public Result<List<T>> ReadCsv<T>(string filePath)
+    public CsvReader GetCsvReader(string filePath)
     {
-        try
+        var reader = new StreamReader(filePath);
+        return new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            using (var reader = new StreamReader(filePath))
-            using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)))
-            {
-                var records = new List<T>(csv.GetRecords<T>());
-                return Result.Ok(records);
-            }
-        }
-        catch (Exception ex)
-        {
-            return Result.Fail<List<T>>($"Failed to read CSV file: {ex.Message}");
-        }
+            HasHeaderRecord = true
+        });
     }
 
-    public Result WriteCsv<T>(string filePath, List<T> records)
+    public CsvWriter GetCsvWriter(string filePath)
     {
-        try
-        {
-            using (var writer = new StreamWriter(filePath))
-            using (var csv = new CsvWriter(writer, new CsvConfiguration(CultureInfo.InvariantCulture)))
-            {
-                csv.WriteRecords(records);
-            }
-            return Result.Ok();
-        }
-        catch (Exception ex)
-        {
-            return Result.Fail($"Failed to write CSV file: {ex.Message}");
-        }
+        var writer = new StreamWriter(filePath);
+        return new CsvWriter(writer, new CsvConfiguration(CultureInfo.InvariantCulture));
     }
 }

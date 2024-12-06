@@ -1,6 +1,8 @@
-public class Instrument
-{
-    public int InstrumentId { get; set; }
-    public string InstrumentName { get; set; }
-    public string Country { get; set; }
-}
+namespace CubeLogic.TransactionsConverter.Models;
+
+public record Instrument
+(
+     int InstrumentId,
+     string InstrumentName,
+     string Country
+);

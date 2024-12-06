@@ -23,6 +23,10 @@ public class ConfigService
         try
         {
             var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(filePath));
+            if (config == null)
+            {
+                return Result.Fail($"Failed to parse config file: Data is null");
+            }
             return Result.Ok(config);
         }
         catch (Exception ex)
